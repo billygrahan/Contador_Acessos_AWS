@@ -4,16 +4,25 @@ import { useEffect, useState } from "react";
 function App() {
   const [hits, setHits] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const API_URL = "https://vmea16gz7g.execute-api.us-east-1.amazonaws.com/hits";
   useEffect(() => {
     // Substitua pela URL gerada pelo Output 'ApiUrl' após o primeiro deploy
-    const API_URL =
-      "https://vmea16gz7g.execute-api.us-east-1.amazonaws.com/hits";
-    fetch(API_URL, { method: "POST" })
+    if (!localStorage.getItem("alreadyInterested")) {
+      fetch(API_URL, { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          localStorage.setItem("alreadyInterested", "true");
+          setHits(data.hits);
+        })
+        .catch((err) => console.error("Erro ao computar acesso:", err))
+        .finally(() => setIsLoading(false));
+    }
+  }, []);
+  useEffect(() => {
+    fetch(API_URL, { method: "GET" })
       .then((res) => res.json())
-      .then((data) => {
-        setHits(data.hits);
-      })
-      .catch((err) => console.error("Erro ao computar acesso:", err))
+      .then((data) => setHits(data.hits))
+      .catch((err) => console.error(err))
       .finally(() => setIsLoading(false));
   }, []);
   return (
