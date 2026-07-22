@@ -6,18 +6,15 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     // Substitua pela URL gerada pelo Output 'ApiUrl' após o primeiro deploy
-    if (!localStorage.getItem("alreadyInterested")) {
-      const API_URL =
-        "https://ptve950dy6.execute-api.us-east-1.amazonaws.com/prod/hits";
-      fetch(API_URL, { method: "POST" })
-        .then((res) => res.json())
-        .then((data) => {
-          localStorage.setItem("alreadyInterested", "true");
-          setHits(data.hits);
-        })
-        .catch((err) => console.error("Erro ao computar acesso:", err))
-        .finally(() => setIsLoading(false));
-    }
+    const API_URL =
+      "https://vmea16gz7g.execute-api.us-east-1.amazonaws.com/hits";
+    fetch(API_URL, { method: "POST" })
+      .then((res) => res.json())
+      .then((data) => {
+        setHits(data.hits);
+      })
+      .catch((err) => console.error("Erro ao computar acesso:", err))
+      .finally(() => setIsLoading(false));
   }, []);
   return (
     <body className="flex flex-col min-h-screen bg-gray-100">
@@ -54,7 +51,7 @@ function App() {
 
           <a
             href="#contador"
-            className="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-2 rounded-lg font-medium"
+            className="bg-blue-600 hover:bg-blue-700 hidden sm:block transition text-white px-5 py-2 rounded-lg font-medium"
           >
             Quero conhecer
           </a>
