@@ -1,8 +1,6 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
-// O cliente se conecta automaticamente na região configurada no ambiente pelo CDK, 
-// mas deixar explícito "us-east-1" não quebra o código.
 const client = new DynamoDBClient({
   region: "us-east-1",
 });
